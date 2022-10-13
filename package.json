@@ -1,0 +1,59 @@
+{
+  "name": "cucumber-table-utils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@swc/jest": "0.2.22",
+    "@types/jest": "29.0.3",
+    "jest": "29.0.3",
+    "prettier": "2.7.1",
+    "tsd": "^0.24.1",
+    "typescript": "4.8.3"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "8.6.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "setupFiles": [],
+    "resetMocks": true,
+    "restoreMocks": true,
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s?$": [
+        "@swc/jest"
+      ]
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(uuid)/)"
+    ],
+    "collectCoverageFrom": [
+      "**/*.ts",
+      "!**/*.mock.ts",
+      "!**/*.module.ts",
+      "!**/main.ts",
+      "!load-env.ts",
+      "!app.config.ts",
+      "!tracer.ts",
+      "!**/index.ts"
+    ],
+    "coverageDirectory": "../coverage",
+    "coveragePathIgnorePatterns": [
+      "/test/"
+    ],
+    "setupFilesAfterEnv": []
+  }
+}
