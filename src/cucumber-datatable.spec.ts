@@ -1,20 +1,21 @@
 import { DataTable } from "@cucumber/cucumber";
-import { cucumberTable } from "./cucumber-table";
-import { Converter } from "./converter";
+import { cucumberDatatable } from "./cucumber-datatable";
+import { Converters } from "./converters";
 
 describe("cucumberTable", () => {
   it("maps the columns in objects", () => {
     const aDataTableFromGherkin = new DataTable([
-      ["Name", "First name", "Nickname"],
-      ["Wayne", "Bruce", "Batman"],
-      ["Stark", "Tony", "Iron Man"],
-      ["Banner", "Robert Bruce", "Hulk"],
+      ["Age", "Name", "First name", "Nickname"],
+      ["83", "Wayne", "Bruce", "Batman"],
+      ["52", "Stark", "Tony", "Iron Man"],
+      ["53", "Banner", "Robert Bruce", "Hulk"],
     ]);
 
-    const getHeroes = cucumberTable({
-      name: { columnName: "Name", converter: Converter.String },
-      firstName: { columnName: "First name", converter: Converter.String },
-      nickname: { columnName: "Nickname", converter: Converter.String },
+    const getHeroes = cucumberDatatable({
+      name: { columnName: "Name", converter: Converters.String },
+      firstName: { columnName: "First name", converter: Converters.String },
+      nickname: { columnName: "Nickname", converter: Converters.String },
+      age: { columnName: "Age", converter: Converters.Number },
     });
 
     const heroes = getHeroes(aDataTableFromGherkin);
@@ -23,16 +24,19 @@ describe("cucumberTable", () => {
         name: "Wayne",
         firstName: "Bruce",
         nickname: "Batman",
+        age: 83,
       },
       {
         name: "Stark",
         firstName: "Tony",
         nickname: "Iron Man",
+        age: 52,
       },
       {
         name: "Banner",
         firstName: "Robert Bruce",
         nickname: "Hulk",
+        age: 53,
       },
     ]);
   });
@@ -43,14 +47,14 @@ describe("cucumberTable", () => {
       ["Banner", "Robert Bruce", "Hulk"],
     ]);
 
-    const getHeroes = cucumberTable({
-      name: { columnName: "Name", converter: Converter.String },
-      firstName: { columnName: "First name", converter: Converter.String },
-      nickname: { columnName: "Nickname", converter: Converter.String },
+    const getHeroes = cucumberDatatable({
+      name: { columnName: "Name", converter: Converters.String },
+      firstName: { columnName: "First name", converter: Converters.String },
+      nickname: { columnName: "Nickname", converter: Converters.String },
     });
 
     expect(() => getHeroes(aDataTableFromGherkin)).toThrowError(
-      "[getCucumberTable]: The column 'Unknown column' is not defined in the dictionary"
+      "[cucumberDatatable]: The column 'Unknown column' is not defined in the dictionary"
     );
   });
 
@@ -61,7 +65,7 @@ describe("cucumberTable", () => {
 
     const aDataTableFromGherkin = new DataTable([["Name"], ["Banner"]]);
 
-    const getHeroes = cucumberTable({
+    const getHeroes = cucumberDatatable({
       name: { columnName: "Name", converter: converterMock },
     });
 
