@@ -1,6 +1,6 @@
 {
   "name": "@cucumber-stories/cucumber-datatable",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Cucumber Datatable made easy!",
   "license": "MIT",
   "author": "Delphin Aubin (@delphinaubin) & Baptiste Lecocq (@tiste)",
