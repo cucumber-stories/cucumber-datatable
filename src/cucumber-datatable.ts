@@ -4,7 +4,7 @@ import {
   DictionaryLine,
   DictionaryOutput,
   GherkinDataTableGetter,
-} from "./index";
+} from "./types";
 
 export function cucumberDatatable<D extends Dictionary<K>, K extends keyof any>(
   dictionary: D
