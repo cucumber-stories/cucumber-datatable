@@ -11,4 +11,5 @@ Run `npm test` and `npm run test-types`
 ### Publish a new version
 
 1. `npm version <major|minor|patch>`
-2. `npm publish`
+2. `git push --tags`
+3. `npm publish`
