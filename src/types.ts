@@ -23,12 +23,8 @@ export type Dictionary<K extends keyof any, RESOLVER> = Record<
 
 export type ConverterOutput<T> = T extends { converter: Converter<infer R> }
   ? R
-  : never;
+  : string;
 
-export type DictionaryOutput<D> = D extends {
-  [P in keyof D]: { converter: Converter<any> };
-}
-  ? { [P in keyof D]: ConverterOutput<D[P]> }
-  : never;
+export type DictionaryOutput<D> = { [P in keyof D]: ConverterOutput<D[P]> };
 
 export type GherkinDataTableGetter<T> = (d: DataTable) => T[];

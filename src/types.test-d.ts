@@ -5,6 +5,7 @@ import { Converters } from "./converters";
 
 const dictionary = {
   name: { columnName: "Name", converter: Converters.String },
+  nameWithDefaultConverter: { columnName: "Name with default" },
   age: { columnName: "Age", converter: Converters.Number },
   custom: {
     columnName: "Custom",
@@ -32,9 +33,11 @@ const getHeroes = cucumberDataTable(dictionary);
 const result = getHeroes(
   new DataTable([["Name", "Age", "Custom", "Compound"]])
 );
+
 expectType<
   {
     name: string;
+    nameWithDefaultConverter: string;
     age: number;
     custom: { custom: string; other: symbol };
     compound: { title: string[]; isAgree: boolean }[];
