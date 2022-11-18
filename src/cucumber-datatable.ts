@@ -1,5 +1,6 @@
 import { DataTable } from "@cucumber/cucumber";
 import {
+  ColumnNameResolver,
   Converter,
   Dictionary,
   DictionaryLine,
@@ -12,11 +13,14 @@ export interface ConverterForKey {
   converter: Converter<unknown>;
 }
 
-export function computeData<D extends Dictionary<K>, K extends keyof any>(
-  data: string[][],
-  converters: ConverterForKey[]
+export function applyConvertersToGherkinData<
+  D extends Dictionary<K, unknown>,
+  K extends keyof any
+>(
+  converters: ConverterForKey[],
+  gherkinData: string[][]
 ): DictionaryOutput<D>[] {
-  return data.map((row) => {
+  return gherkinData.map((row) => {
     return row.reduce((output, cell, index) => {
       const dictionaryEntry = converters[index]!;
       return {
@@ -27,13 +31,19 @@ export function computeData<D extends Dictionary<K>, K extends keyof any>(
   });
 }
 
-export function cucumberDatatable<D extends Dictionary<K>, K extends keyof any>(
-  dictionary: D
-): GherkinDataTableGetter<DictionaryOutput<D>> {
-  const dictionaryEntries = Object.entries<DictionaryLine>(dictionary).map(
-    ([outputKey, { columnName, converter }]: [string, DictionaryLine]): {
+export function cucumberDatatable<
+  D extends Dictionary<K, ColumnNameResolver>,
+  K extends keyof any
+>(dictionary: D): GherkinDataTableGetter<DictionaryOutput<D>> {
+  const dictionaryEntries = Object.entries<DictionaryLine<ColumnNameResolver>>(
+    dictionary
+  ).map(
+    ([outputKey, { columnName, converter }]: [
+      string,
+      DictionaryLine<ColumnNameResolver>
+    ]): {
       outputKey: string;
-    } & DictionaryLine => {
+    } & DictionaryLine<ColumnNameResolver> => {
       return {
         outputKey,
         converter,
@@ -62,6 +72,6 @@ export function cucumberDatatable<D extends Dictionary<K>, K extends keyof any>(
       }
     );
 
-    return computeData<D, K>(data, converterForKeys);
+    return applyConvertersToGherkinData<D, K>(converterForKeys, data);
   };
 }

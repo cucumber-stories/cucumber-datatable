@@ -1,6 +1,14 @@
-import { Jesaispas, NestedDictionary } from "../types";
+import {
+  Dictionary,
+  DictionaryLine,
+  LineToConvert,
+  PositionResolver,
+} from "../types";
 import { Converters } from "./index";
-import { computeData, ConverterForKey } from "../cucumber-datatable";
+import {
+  applyConvertersToGherkinData,
+  ConverterForKey,
+} from "../cucumber-datatable";
 
 export function objectArrayConverter({
   propertySeparator,
@@ -9,25 +17,36 @@ export function objectArrayConverter({
   propertySeparator: string;
   itemSeparator: string;
 }) {
-  return function <D extends NestedDictionary<K>, K extends keyof any>(
-    dictionary: D
-  ) {
+  return function <
+    D extends Dictionary<K, PositionResolver>,
+    K extends keyof any
+  >(dictionary: D) {
     return function (data: string) {
       const items = Converters.StringArray(data, itemSeparator);
       const itemsWithPropertiesArray = items.map((o) =>
         o.split(propertySeparator)
       );
 
-      const output: ConverterForKey[] = Object.entries<Jesaispas>(
-        dictionary
-      ).map(([outputKey, { position, converter }]: [string, Jesaispas]) => {
-        return {
-          outputKey: outputKey,
-          converter: converter,
-        };
-      });
+      const converterForKeys: ConverterForKey[] = Object.entries<
+        DictionaryLine<PositionResolver>
+      >(dictionary)
+        .sort(
+          (
+            [, { position: position1 }]: [unknown, PositionResolver],
+            [, { position: position2 }]: [unknown, PositionResolver]
+          ) => position1 - position2
+        )
+        .map(([outputKey, { converter }]: [string, LineToConvert]) => {
+          return {
+            outputKey: outputKey,
+            converter: converter,
+          };
+        });
 
-      return computeData<D, K>(itemsWithPropertiesArray, output);
+      return applyConvertersToGherkinData<D, K>(
+        converterForKeys,
+        itemsWithPropertiesArray
+      );
     };
   };
 }
