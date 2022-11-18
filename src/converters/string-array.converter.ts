@@ -1,7 +1,9 @@
-export function stringArrayConverter(value: string): string[] {
+export function stringArrayConverter(value: string, separator = ","): string[] {
   if (value.trim().length === 0) {
     return [];
   }
 
-  return value.split(/ *, */);
+  const splitter = new RegExp(` *${separator} *`);
+
+  return value.split(splitter);
 }

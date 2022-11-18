@@ -6,6 +6,14 @@ export type DictionaryLine = {
   converter: Converter<unknown>;
   columnName: string;
 };
+
+export interface Jesaispas {
+  converter: Converter<unknown>;
+  position: number;
+}
+
+export type NestedDictionary<K extends keyof any> = Record<K, Jesaispas>;
+
 export type Dictionary<K extends keyof any> = Record<K, DictionaryLine>;
 
 export type ConverterOutput<T> = T extends { converter: Converter<infer R> }
