@@ -12,4 +12,4 @@ Run `npm test` and `npm run test-types`
 
 1. `npm version <major|minor|patch>`
 2. `git push --tags`
-3. `npm publish`
+3. Create a release on this tag.
