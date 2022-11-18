@@ -79,3 +79,67 @@ describe("cucumberTable", () => {
     expect(converterMock).toHaveBeenCalledWith("Banner");
   });
 });
+
+it("Works with many converters", () => {
+  const aDataTableFromGherkin = new DataTable([
+    ["Attributes", "Price", "Is active ?"],
+    ["Color:Red, Name:Strawberry", "4", "yes"],
+    ["Color:Blue, Name:Blueberry", "7.2", "no"],
+  ]);
+
+  const getHeroes = cucumberDatatable({
+    price: { columnName: "Price", converter: Converters.Number },
+    attributes: {
+      columnName: "Attributes",
+      converter: Converters.ObjectArray({
+        propertySeparator: ":",
+        itemSeparator: ",",
+      })({
+        label: {
+          position: 0,
+          converter: Converters.String,
+        },
+        value: {
+          position: 1,
+          converter: Converters.String,
+        },
+      }),
+    },
+    active: {
+      columnName: "Is active ?",
+      converter: Converters.YesNoToBoolean,
+    },
+  });
+
+  const heroes = getHeroes(aDataTableFromGherkin);
+  expect(heroes).toEqual([
+    {
+      attributes: [
+        {
+          label: "Color",
+          value: "Red",
+        },
+        {
+          label: "Name",
+          value: "Strawberry",
+        },
+      ],
+      price: 4,
+      active: true,
+    },
+    {
+      attributes: [
+        {
+          label: "Color",
+          value: "Blue",
+        },
+        {
+          label: "Name",
+          value: "Blueberry",
+        },
+      ],
+      price: 7.2,
+      active: false,
+    },
+  ]);
+});

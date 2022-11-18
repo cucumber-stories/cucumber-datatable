@@ -28,4 +28,12 @@ describe("stringArrayConverter", () => {
       "three",
     ]);
   });
+
+  it("handles semi-colon+ several spaces separator", () => {
+    expect(stringArrayConverter("one  ; two;      three", ";")).toEqual([
+      "one",
+      "two",
+      "three",
+    ]);
+  });
 });
