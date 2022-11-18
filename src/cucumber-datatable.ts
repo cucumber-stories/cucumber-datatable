@@ -7,10 +7,11 @@ import {
   DictionaryOutput,
   GherkinDataTableGetter,
 } from "./types";
+import { Converters } from "./converters";
 
 export interface ConverterForKey {
   outputKey: string;
-  converter: Converter<unknown>;
+  converter?: Converter<unknown>;
 }
 
 export function applyConvertersToGherkinData<
@@ -25,7 +26,9 @@ export function applyConvertersToGherkinData<
       const dictionaryEntry = converters[index]!;
       return {
         ...output,
-        [dictionaryEntry.outputKey]: dictionaryEntry.converter(cell),
+        [dictionaryEntry.outputKey]: dictionaryEntry.converter
+          ? dictionaryEntry.converter(cell)
+          : Converters.String(cell),
       };
     }, <DictionaryOutput<D>>{});
   });
