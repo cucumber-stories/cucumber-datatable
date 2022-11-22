@@ -31,7 +31,7 @@ export function applyConvertersToGherkinData<
   });
 }
 
-export function cucumberDatatable<
+export function cucumberDataTable<
   D extends Dictionary<K, ColumnNameResolver>,
   K extends keyof any
 >(dictionary: D): GherkinDataTableGetter<DictionaryOutput<D>> {

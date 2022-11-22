@@ -1,7 +1,7 @@
 {
   "name": "@cucumber-stories/cucumber-datatable",
   "version": "1.2.0",
-  "description": "Cucumber Datatable made easy!",
+  "description": "Cucumber DataTable is a library to simplify and enhance data tables in gherkins feature files.",
   "license": "MIT",
   "author": "Delphin Aubin (@delphinaubin) & Baptiste Lecocq (@tiste)",
   "main": "dist/index.js",
