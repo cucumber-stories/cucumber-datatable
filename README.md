@@ -11,7 +11,7 @@ By providing schema for your data table you can easily pass from silly strings t
 
 ### A sample is better than 100 words:
 
-Imagine you want to handle a gherkin table like this
+Imagine you want to handle a gherkin table like this:
 
 ```gherkin
 Feature: Heroes sample
@@ -57,8 +57,8 @@ Given(/^The following heroes$/, function (table: DataTable) {
 First, you have to define a dictionary composed of 2 things.
 It has the same keys as output objects and attach to it the following metadata:
 
-- columnName: The column name in the gherkin file (`.feature`)
-- converter: The converter to use to transform the data from the gherkin data table
+- `columnName`: The column name in the gherkin file (`.feature`)
+- `converter`: The converter to use to transform the data from the gherkin data table
 
 You have to use the `cucumberDataTable()` function to create a reusable function used in your steps to transform your
 data.
@@ -87,8 +87,8 @@ Given(/^The following table/, function (dataTable: DataTable) {
 
 ### Converters
 
-Converters are used to convert the data  
-Out of the box the library provides some useful converters
+Converters are used to convert the data.
+Out of the box the library provides some useful converters.
 
 | Name                        | In Gherkin         | Output                               |
 | --------------------------- | ------------------ | ------------------------------------ |
@@ -100,9 +100,9 @@ Out of the box the library provides some useful converters
 
 #### Object array converter
 
-The `Converters.ObjectArray()` is a bit tricky, so it deserve its own part in our documentation:
+The `Converters.ObjectArray()` is a bit tricky, so it deserve its own part in our documentation.
 
-Imagine the following gherkin file
+Imagine the following gherkin file:
 
 ```gherkin
 Feature: Heroes sample
@@ -114,7 +114,7 @@ Feature: Heroes sample
       | 10:Name        | other |
 ```
 
-if you want an output like this :
+If you want an output like this:
 
 ```typescript
 [
@@ -139,9 +139,7 @@ To use this converter you have to define:
 - the separator of different items
 - the separator of different properties of a same object
 
-And then
-
-- the schema of nested objects
+And then the schema of nested objects:
 
 ```typescript
 import {
@@ -183,7 +181,7 @@ const getStructuredData = cucumberDataTable(dictionary);
 At the end a converter is a simple function which takes a string in argument (the data from the gherkin file) and
 returns what you want.
 
-for example if you want to output a custom structure from a column you can do this :
+For example if you want to output a custom structure from a column you can do this:
 
 ```typescript
 import {
@@ -206,7 +204,7 @@ const dictionary = {
 const getStructuredData = cucumberDataTable(dictionary);
 ```
 
-it will transform this table
+It will transform this table:
 
 ```gherkin
 Feature: Heroes sample
@@ -218,7 +216,7 @@ Feature: Heroes sample
       | 002  | other |
 ```
 
-into
+Into:
 
 ```typescript
 [
