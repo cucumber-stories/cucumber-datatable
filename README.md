@@ -15,6 +15,7 @@ Imagine you want to handle a gherkin table like this
 
 ```gherkin
 Feature: Heroes sample
+
   Scenario: A simple heroes table
     Given the following heroes
       | Name         | Age |
@@ -66,12 +67,12 @@ data.
 import { cucumberDataTable } from "@cucumber-stories/cucumber-datatable";
 
 const dictionary = {
-  keyInOutput: {
-    columnName: "Column name in gherkin file",
-    converter: Converters.String,
+  name: {
+    columnName: "Name", // Column name in Gherkin file
+    converter: Converters.String, // Converter to use (more samples bellow)
   },
-  otherKeyInOutput: {
-    columnName: "Another column with a number in it",
+  age: {
+    columnName: "Age",
     converter: Converters.Number,
   },
 };
@@ -101,6 +102,38 @@ Out of the box the library provides some useful converters
 
 The `Converters.ObjectArray()` is a bit tricky, so it deserve its own part in our documentation:
 
+Imagine the following gherkin file
+
+```gherkin
+Feature: Heroes sample
+
+  Scenario:
+    Given the following attributes
+      | Attributes     | Other |
+      | 1:Color,2:Size | other |
+      | 10:Name        | other |
+```
+
+if you want an output like this :
+
+```typescript
+[
+  {
+    attributes: [
+      { code: 1, name: "Color" },
+      { code: 2, name: "Size" },
+    ],
+    other: "other",
+  },
+  {
+    attributes: [{ code: 10, name: "Name" }],
+    other: "other",
+  },
+];
+```
+
+You probably need the `Converters.ObjectArray()`.
+
 To use this converter you have to define:
 
 - the separator of different items
@@ -122,7 +155,7 @@ const itemsWithCommaConverter = Converters.ObjectArray({
 });
 
 const dictionary = {
-  productAttributes: {
+  attributes: {
     columnName: "Attributes",
     converter: itemsWithCommaConverter({
       code: {
@@ -135,6 +168,11 @@ const dictionary = {
       },
     }),
   },
+  // Other columns...
+  other: {
+    columnName: "Other",
+    converter: Converters.String,
+  },
 };
 
 const getStructuredData = cucumberDataTable(dictionary);
@@ -142,7 +180,52 @@ const getStructuredData = cucumberDataTable(dictionary);
 
 #### Custom converter
 
-> Todo write this part !
+At the end a converter is a simple function which takes a string in argument (the data from the gherkin file) and
+returns what you want.
+
+for example if you want to output a custom structure from a column you can do this :
+
+```typescript
+import {
+  cucumberDataTable,
+  Converters,
+} from "@cucumber-stories/cucumber-datatable";
+
+const dictionary = {
+  code: {
+    columnName: "Code",
+    converter: (code: string) => ({ nested: code }),
+  },
+  // Other columns...
+  other: {
+    columnName: "Other",
+    converter: Converters.String,
+  },
+};
+
+const getStructuredData = cucumberDataTable(dictionary);
+```
+
+it will transform this table
+
+```gherkin
+Feature: Heroes sample
+
+  Scenario: A simple heroes table
+    Given the following table
+      | Code | Other |
+      | 001  | other |
+      | 002  | other |
+```
+
+into
+
+```typescript
+[
+  { code: { nested: "001" }, other: "other" },
+  { code: { nested: "002" }, other: "other" },
+];
+```
 
 ## Development
 
