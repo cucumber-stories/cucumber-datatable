@@ -1,9 +1,9 @@
 import { expectType } from "tsd";
-import { cucumberDatatable } from "./cucumber-datatable";
+import { cucumberDataTable } from "./cucumber-datatable";
 import { DataTable } from "@cucumber/cucumber";
 import { Converters } from "./converters";
 
-const getHeroes = cucumberDatatable({
+const dictionary = {
   name: { columnName: "Name", converter: Converters.String },
   age: { columnName: "Age", converter: Converters.Number },
   custom: {
@@ -26,12 +26,12 @@ const getHeroes = cucumberDatatable({
       },
     }),
   },
-});
+};
+const getHeroes = cucumberDataTable(dictionary);
 
 const result = getHeroes(
   new DataTable([["Name", "Age", "Custom", "Compound"]])
 );
-
 expectType<
   {
     name: string;

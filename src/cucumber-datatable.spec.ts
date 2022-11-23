@@ -1,5 +1,5 @@
 import { DataTable } from "@cucumber/cucumber";
-import { cucumberDatatable } from "./cucumber-datatable";
+import { cucumberDataTable } from "./cucumber-datatable";
 import { Converters } from "./converters";
 
 describe("cucumberTable", () => {
@@ -11,7 +11,7 @@ describe("cucumberTable", () => {
       ["53", "Banner", "Robert Bruce", "Hulk"],
     ]);
 
-    const getHeroes = cucumberDatatable({
+    const getHeroes = cucumberDataTable({
       name: { columnName: "Name", converter: Converters.String },
       firstName: { columnName: "First name", converter: Converters.String },
       nickname: { columnName: "Nickname", converter: Converters.String },
@@ -47,7 +47,7 @@ describe("cucumberTable", () => {
       ["Banner", "Robert Bruce", "Hulk"],
     ]);
 
-    const getHeroes = cucumberDatatable({
+    const getHeroes = cucumberDataTable({
       name: { columnName: "Name", converter: Converters.String },
       firstName: { columnName: "First name", converter: Converters.String },
       nickname: { columnName: "Nickname", converter: Converters.String },
@@ -65,7 +65,7 @@ describe("cucumberTable", () => {
 
     const aDataTableFromGherkin = new DataTable([["Name"], ["Banner"]]);
 
-    const getHeroes = cucumberDatatable({
+    const getHeroes = cucumberDataTable({
       name: { columnName: "Name", converter: converterMock },
     });
 
@@ -87,7 +87,7 @@ it("Works with many converters", () => {
     ["Color:Blue, Name:Blueberry", "7.2", "no"],
   ]);
 
-  const getHeroes = cucumberDatatable({
+  const getHeroes = cucumberDataTable({
     price: { columnName: "Price", converter: Converters.Number },
     attributes: {
       columnName: "Attributes",
