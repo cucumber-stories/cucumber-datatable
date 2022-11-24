@@ -22,7 +22,7 @@ export function objectArrayConverter({
     K extends keyof any
   >(dictionary: D) {
     return function (data: string) {
-      const items = Converters.StringArray(data, itemSeparator);
+      const items = Converters.StringArray(data, { separator: itemSeparator });
       const itemsWithPropertiesArray = items.map((o) =>
         o.split(propertySeparator)
       );

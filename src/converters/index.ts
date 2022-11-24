@@ -3,6 +3,7 @@ import { numberConverter } from "./number.converter";
 import { yesNoToBooleanConverter } from "./yes-no-to-boolean.converter";
 import { stringArrayConverter } from "./string-array.converter";
 import { objectArrayConverter } from "./object-array.converter";
+import { withConfig } from "./with-config.converter";
 
 export const Converters = {
   String: stringConverter,
@@ -10,4 +11,5 @@ export const Converters = {
   YesNoToBoolean: yesNoToBooleanConverter,
   StringArray: stringArrayConverter,
   ObjectArray: objectArrayConverter,
+  WithConfig: withConfig,
 } as const;

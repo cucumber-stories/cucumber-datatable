@@ -1,6 +1,10 @@
 import { DataTable } from "@cucumber/cucumber";
+import { Config } from "./converters/with-config.converter";
 
-export type Converter<T> = (param: string) => T;
+export type Converter<T, C extends Config = Config> = (
+  param: string,
+  config?: C
+) => T;
 
 export type ColumnNameResolver = {
   columnName: string;
