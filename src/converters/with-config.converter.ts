@@ -1,8 +1,6 @@
 import { Converter } from "../types";
 
-export type Config = any;
-
-export function withConfig<T, C extends Config>(
+export function withConfig<T, C>(
   converter: Converter<T, C>,
   config: C
 ): Converter<T, C> {

@@ -1,6 +1,4 @@
-import { Config } from "./with-config.converter";
-
-interface YesNoToBooleanConfig extends Config {
+interface YesNoToBooleanConfig {
   yes: string;
   no: string;
 }

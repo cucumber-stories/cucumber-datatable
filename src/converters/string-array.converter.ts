@@ -1,6 +1,4 @@
-import { Config } from "./with-config.converter";
-
-interface StringArrayConfig extends Config {
+interface StringArrayConfig {
   separator: string;
 }
 
