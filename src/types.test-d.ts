@@ -16,13 +16,17 @@ const dictionary = {
       itemSeparator: ",",
       propertySeparator: ":",
     })({
-      title: {
+      titles: {
         converter: Converters.StringArray,
         position: 0,
       },
-      isAgree: {
-        converter: Converters.YesNoToBoolean,
+      names: {
+        converter: Converters.StringArray.withConfig({ separator: "," }),
         position: 1,
+      },
+      isAgree: {
+        converter: Converters.Nullable(Converters.YesNoToBoolean),
+        position: 2,
       },
     }),
   },
@@ -37,6 +41,6 @@ expectType<
     name: string;
     age: number;
     custom: { custom: string; other: symbol };
-    compound: { title: string[]; isAgree: boolean }[];
+    compound: { titles: string[]; names: string[]; isAgree: boolean | null }[];
   }[]
 >(result);

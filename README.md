@@ -90,13 +90,62 @@ Given(/^The following table/, function (dataTable: DataTable) {
 Converters are used to convert the data.
 Out of the box the library provides some useful converters.
 
-| Name                        | In Gherkin         | Output                               |
-| --------------------------- | ------------------ | ------------------------------------ |
-| `Converters.String`         | `"Foo"`            | `"Foo"`                              |
-| `Converters.Number`         | `"42"`             | `42`                                 |
-| `Converters.YesNoToBoolean` | `"yes"` or `"no"`  | `true` or `false`                    |
-| `Converters.StringArray`    | `"Foo, Bar"`       | `["Foo", "Bar"]`                     |
-| `Converters.ObjectArray`    | `"Foo:42, Bar:32"` | [see below](#object-array-converter) |
+Some of the converters can be configurable, you can have details on the [Converter config](#converter-config) section.
+
+| Name                        | In Gherkin         | Output                               | [Default config](#converter-config) |
+| --------------------------- | ------------------ | ------------------------------------ | ----------------------------------- |
+| `Converters.String`         | `"Foo"`            | `"Foo"`                              |                                     |
+| `Converters.Number`         | `"42"`             | `42`                                 |                                     |
+| `Converters.YesNoToBoolean` | `"yes"` or `"no"`  | `true` or `false`                    | `{ yes: "yes"; no: "no" }`          |
+| `Converters.StringArray`    | `"Foo, Bar"`       | `["Foo", "Bar"]`                     | `{ separator: "," }`                |
+| `Converters.ObjectArray`    | `"Foo:42, Bar:32"` | [see below](#object-array-converter) |                                     |
+| `Converters.Nullable`       | `"<null>"`         | [see below](#nullable)               | `{ nullValue: "<null>" }`           |
+
+#### Converter config
+
+If a converter needs configuration, you can wrap it with `Converters.WithConfig`, such as:
+
+```typescript
+const dictionary = {
+  tags: {
+    columnName: "Tags",
+    converter: Converters.WithConfig(Converters.StringArray, {
+      separator: "-",
+    }),
+  },
+};
+```
+
+#### Nullable
+
+If some of your values need to be nullable, and want to be used as `null` in your code, you can use the `Nullable`
+converter.
+
+```typescript
+const dictionary = {
+  name: {
+    columnName: "Name",
+    converter: Converters.Nullable(Converters.String),
+  },
+};
+
+// name will be string | null
+```
+
+You can also configure the null value, which default to `<null>`
+
+```typescript
+const dictionary = {
+  name: {
+    columnName: "Name",
+    converter: Converters.Nullable(Converters.String, {
+      nullValue: "vide",
+    }),
+  },
+};
+
+// name will be string | null, when the value is "vide"
+```
 
 #### Object array converter
 
