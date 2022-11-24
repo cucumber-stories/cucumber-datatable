@@ -1,9 +1,22 @@
-export function yesNoToBooleanConverter(value: string): boolean {
+import { Config } from "./with-config.converter";
+
+interface YesNoToBooleanConfig extends Config {
+  yes: string;
+  no: string;
+}
+
+export function yesNoToBooleanConverter(
+  value: string,
+  config: YesNoToBooleanConfig = {
+    yes: "yes",
+    no: "no",
+  }
+): boolean {
   switch (value) {
-    case "yes": {
+    case config.yes: {
       return true;
     }
-    case "no": {
+    case config.no: {
       return false;
     }
     default: {

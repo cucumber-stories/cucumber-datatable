@@ -90,13 +90,13 @@ Given(/^The following table/, function (dataTable: DataTable) {
 Converters are used to convert the data.
 Out of the box the library provides some useful converters.
 
-| Name                        | In Gherkin         | Output                               |
-| --------------------------- | ------------------ | ------------------------------------ |
-| `Converters.String`         | `"Foo"`            | `"Foo"`                              |
-| `Converters.Number`         | `"42"`             | `42`                                 |
-| `Converters.YesNoToBoolean` | `"yes"` or `"no"`  | `true` or `false`                    |
-| `Converters.StringArray`    | `"Foo, Bar"`       | `["Foo", "Bar"]`                     |
-| `Converters.ObjectArray`    | `"Foo:42, Bar:32"` | [see below](#object-array-converter) |
+| Name                        | In Gherkin         | Output                               | Config                        |
+| --------------------------- | ------------------ | ------------------------------------ | ----------------------------- |
+| `Converters.String`         | `"Foo"`            | `"Foo"`                              |                               |
+| `Converters.Number`         | `"42"`             | `42`                                 |                               |
+| `Converters.YesNoToBoolean` | `"yes"` or `"no"`  | `true` or `false`                    | `{ yes: string; no: string }` |
+| `Converters.StringArray`    | `"Foo, Bar"`       | `["Foo", "Bar"]`                     | `{ separator: string }`       |
+| `Converters.ObjectArray`    | `"Foo:42, Bar:32"` | [see below](#object-array-converter) |                               |
 
 #### Object array converter
 
