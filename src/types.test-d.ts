@@ -27,7 +27,7 @@ const dictionary = {
         position: 1,
       },
       isAgree: {
-        converter: Converters.YesNoToBoolean,
+        converter: Converters.Nullable(Converters.YesNoToBoolean),
         position: 2,
       },
     }),
@@ -43,6 +43,6 @@ expectType<
     name: string;
     age: number;
     custom: { custom: string; other: symbol };
-    compound: { titles: string[]; names: string[]; isAgree: boolean }[];
+    compound: { titles: string[]; names: string[]; isAgree: boolean | null }[];
   }[]
 >(result);

@@ -80,9 +80,9 @@ it("use dictionary's converter to convert the cells", () => {
 
 it("works with many converters", () => {
   const aDataTableFromGherkin = new DataTable([
-    ["Attributes", "Price", "Is active ?", "Tags"],
-    ["Color:Red, Name:Strawberry", "4", "yes", "red - rouge"],
-    ["Color:Blue, Name:Blueberry", "7.2", "no", "blue - bleu"],
+    ["Attributes", "Price", "Is active ?", "Tags", "VAT"],
+    ["Color:Red, Name:Strawberry", "4", "yes", "red - rouge", "20%"],
+    ["Color:Blue, Name:Blueberry", "7.2", "no", "blue - bleu", "null"],
   ]);
 
   const getHeroes = cucumberDataTable({
@@ -113,6 +113,13 @@ it("works with many converters", () => {
         separator: "-",
       }),
     },
+    vat: {
+      columnName: "VAT",
+      converter: Converters.Nullable(
+        Converters.WithConfig(Converters.StringArray, { separator: "," }),
+        { nullValue: "null" }
+      ),
+    },
   });
 
   const heroes = getHeroes(aDataTableFromGherkin);
@@ -131,6 +138,7 @@ it("works with many converters", () => {
       price: 4,
       active: true,
       tags: ["red", "rouge"],
+      vat: ["20%"],
     },
     {
       attributes: [
@@ -146,6 +154,7 @@ it("works with many converters", () => {
       price: 7.2,
       active: false,
       tags: ["blue", "bleu"],
+      vat: null,
     },
   ]);
 });
