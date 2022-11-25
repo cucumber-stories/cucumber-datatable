@@ -34,4 +34,12 @@ describe("stringArrayConverter", () => {
       stringArrayConverter("one  ; two;      three", { separator: ";" })
     ).toEqual(["one", "two", "three"]);
   });
+
+  it("handles", () => {
+    expect(
+      stringArrayConverter.withConfig({
+        separator: ";",
+      })("one  ; two;      three")
+    ).toEqual(["one", "two", "three"]);
+  });
 });

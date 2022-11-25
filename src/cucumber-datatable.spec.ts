@@ -109,7 +109,7 @@ it("works with many converters", () => {
     },
     tags: {
       columnName: "Tags",
-      converter: Converters.WithConfig(Converters.StringArray, {
+      converter: Converters.StringArray.withConfig({
         separator: "-",
       }),
     },

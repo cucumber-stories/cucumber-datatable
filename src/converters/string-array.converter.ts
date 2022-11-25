@@ -14,3 +14,9 @@ export function stringArrayConverter(
 
   return value.split(splitter);
 }
+
+stringArrayConverter.withConfig = function (config: StringArrayConfig) {
+  return (value: string) => {
+    return this(value, config);
+  };
+};
