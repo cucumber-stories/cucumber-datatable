@@ -1,6 +1,7 @@
 import { DataTable } from "@cucumber/cucumber";
 import { cucumberDataTable } from "./cucumber-datatable";
 import { Converters } from "./converters";
+import { Converter } from "./converters/converter";
 
 describe("cucumberTable", () => {
   it("maps the columns in objects", () => {
@@ -15,7 +16,10 @@ describe("cucumberTable", () => {
       name: { columnName: "Name", converter: Converters.String },
       firstName: { columnName: "First name", converter: Converters.String },
       nickname: { columnName: "Nickname", converter: Converters.String },
-      age: { columnName: "Age", converter: Converters.Number },
+      age: {
+        columnName: "Age",
+        converter: Converters.Number,
+      },
     });
 
     const heroes = getHeroes(aDataTableFromGherkin);
@@ -66,7 +70,7 @@ describe("cucumberTable", () => {
     const aDataTableFromGherkin = new DataTable([["Name"], ["Banner"]]);
 
     const getHeroes = cucumberDataTable({
-      name: { columnName: "Name", converter: converterMock },
+      name: { columnName: "Name", converter: new Converter(converterMock) },
     });
 
     const result = getHeroes(aDataTableFromGherkin);
@@ -76,7 +80,7 @@ describe("cucumberTable", () => {
       },
     ]);
 
-    expect(converterMock).toHaveBeenCalledWith("Banner");
+    expect(converterMock).toHaveBeenCalledWith("Banner", undefined);
   });
 });
 
@@ -91,17 +95,18 @@ it("Works with many converters", () => {
     price: { columnName: "Price", converter: Converters.Number },
     attributes: {
       columnName: "Attributes",
-      converter: Converters.ObjectArray({
+      converter: Converters.ObjectArray.withConfig({
         propertySeparator: ":",
         itemSeparator: ",",
-      })({
-        label: {
-          position: 0,
-          converter: Converters.String,
-        },
-        value: {
-          position: 1,
-          converter: Converters.String,
+        dictionary: {
+          label: {
+            position: 0,
+            converter: Converters.String,
+          },
+          value: {
+            position: 1,
+            converter: Converters.String,
+          },
         },
       }),
     },
