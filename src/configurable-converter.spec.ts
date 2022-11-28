@@ -8,3 +8,9 @@ it("handles config", () => {
     configurableConverter(converter).withConfig({ foo: 42 })("bar")
   ).toEqual("bar42");
 });
+
+it("handles default config with overridden config", () => {
+  expect(
+    configurableConverter(converter).withConfig({ foo: 42 })("bar")
+  ).toEqual("bar42");
+});

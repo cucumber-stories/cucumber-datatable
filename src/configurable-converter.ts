@@ -1,14 +1,16 @@
-import { Converter } from "./types";
+import { Converter, ConverterToConfigure } from "./types";
 
 export const configurableConverter = function <T, C = any>(
-  converter: Converter<T, C>
+  converter: ConverterToConfigure<T, C>
 ): Converter<T> & { withConfig: (config: C) => Converter<T> } {
-  const converterWithConfig = (value: string, c?: C) => {
-    return converter(value, c);
+  const converterWithConfig = (value: string) => {
+    return converter(value);
   };
 
   converterWithConfig.withConfig = function (config: C) {
-    return (value: string) => converterWithConfig(value, config);
+    return (value: string) => {
+      return converter(value, config);
+    };
   };
 
   return converterWithConfig;
