@@ -21,9 +21,7 @@ const dictionary = {
         position: 0,
       },
       names: {
-        converter: Converters.WithConfig(Converters.StringArray, {
-          separator: ";",
-        }),
+        converter: Converters.StringArray.withConfig({ separator: "," }),
         position: 1,
       },
       isAgree: {

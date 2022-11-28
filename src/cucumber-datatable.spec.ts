@@ -116,7 +116,7 @@ it("works with many converters", () => {
     vat: {
       columnName: "VAT",
       converter: Converters.Nullable(
-        Converters.WithConfig(Converters.StringArray, { separator: "," }),
+        Converters.StringArray.withConfig({ separator: "," }),
         { nullValue: "null" }
       ),
     },
