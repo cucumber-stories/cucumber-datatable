@@ -1,5 +1,9 @@
 import { DataTable } from "@cucumber/cucumber";
 
+export type ConverterWithConfig<T, C = any> = Converter<T> & {
+  withConfig: (config: C) => Converter<T>;
+};
+
 export type Converter<T> = (param: string) => T;
 
 export type ConverterToConfigure<T, C> = (param: string, config?: C) => T;
