@@ -26,18 +26,21 @@ export function objectArrayConverter<
   data: string,
   config?: ObjectArrayConverterConfig
 ) => DictionaryOutput<D>[] {
-  return (data: string, config?: ObjectArrayConverterConfig) => {
-    const propertySeparator = config?.propertySeparator || ":";
-    const itemSeparator = config?.itemSeparator || ",";
-
+  return (
+    data: string,
+    config: ObjectArrayConverterConfig = {
+      propertySeparator: ":",
+      itemSeparator: ",",
+    }
+  ) => {
     const items = Converter.of(stringArrayConverter)
       .withConfig({
-        separator: itemSeparator,
+        separator: config.itemSeparator,
       })
       .convert(data);
 
     const itemsWithPropertiesArray = items.map((o) =>
-      o.split(propertySeparator)
+      o.split(config.propertySeparator)
     );
 
     const converterForKeys: ConverterForKey[] = Object.entries<
