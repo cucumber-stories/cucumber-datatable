@@ -82,27 +82,26 @@ it("use dictionary's converter to convert the cells", () => {
 it("works with many converters", () => {
   const aDataTableFromGherkin = new DataTable([
     ["Attributes", "Price", "Is active ?", "Tags", "VAT"],
-    ["Color:Red, Name:Strawberry", "4", "yes", "red - rouge", "20%"],
-    ["Color:Blue, Name:Blueberry", "7.2", "no", "blue - bleu", "null"],
+    ["Color:Red; Name:Strawberry", "4", "yes", "red - rouge", "20%"],
+    ["Color:Blue; Name:Blueberry", "7.2", "no", "blue - bleu", "null"],
   ]);
 
   const getHeroes = cucumberDataTable({
     price: { columnName: "Price", converter: Converters.Number },
     attributes: {
       columnName: "Attributes",
-      converter: Converters.ObjectArray.withConfig({
-        propertySeparator: ":",
-        itemSeparator: ",",
-        dictionary: {
-          label: {
-            position: 0,
-            converter: Converters.String,
-          },
-          value: {
-            position: 1,
-            converter: Converters.String,
-          },
+      converter: Converters.ObjectArray({
+        label: {
+          position: 0,
+          converter: Converters.String,
         },
+        value: {
+          position: 1,
+          converter: Converters.String,
+        },
+      }).withConfig({
+        propertySeparator: ":",
+        itemSeparator: ";",
       }),
     },
     active: {

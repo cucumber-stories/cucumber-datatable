@@ -6,6 +6,7 @@ import { objectArrayConverter } from "./object-array.converter";
 import { Converter } from "./converter";
 import { nullable } from "./nullable.converter";
 import { customConverter } from "./custom.converter";
+import { Dictionary, PositionResolver } from "../types";
 
 export class Converters {
   static get String() {
@@ -24,8 +25,11 @@ export class Converters {
     return Converter.of(stringArrayConverter);
   }
 
-  static get ObjectArray() {
-    return Converter.of(objectArrayConverter);
+  static ObjectArray<
+    D extends Dictionary<K, PositionResolver>,
+    K extends keyof any
+  >(dictionary: D) {
+    return Converter.of(objectArrayConverter(dictionary));
   }
 
   static get Custom() {

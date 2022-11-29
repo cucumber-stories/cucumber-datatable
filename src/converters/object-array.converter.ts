@@ -12,53 +12,53 @@ import {
 import { Converter } from "./converter";
 import { stringArrayConverter } from "./string-array.converter";
 
+export interface ObjectArrayConverterConfig {
+  propertySeparator: string;
+  itemSeparator: string;
+}
+
 export function objectArrayConverter<
   D extends Dictionary<K, PositionResolver>,
   K extends keyof any
 >(
+  dictionary: D
+): (
   data: string,
-  config?: {
-    propertySeparator: string;
-    itemSeparator: string;
-    dictionary: D;
-  }
-): DictionaryOutput<D>[] {
-  const propertySeparator = config?.propertySeparator || ":";
-  const itemSeparator = config?.itemSeparator || ",";
+  config?: ObjectArrayConverterConfig
+) => DictionaryOutput<D>[] {
+  return (data: string, config?: ObjectArrayConverterConfig) => {
+    const propertySeparator = config?.propertySeparator || ":";
+    const itemSeparator = config?.itemSeparator || ",";
 
-  const dictionary = config?.dictionary;
-  if (!dictionary) {
-    throw new Error(
-      "[cucumberDatatable][objectArrayConverter] cannot use the objectArrayConverter without giving a dictionary"
+    const items = Converter.of(stringArrayConverter)
+      .withConfig({
+        separator: itemSeparator,
+      })
+      .convert(data);
+
+    const itemsWithPropertiesArray = items.map((o) =>
+      o.split(propertySeparator)
     );
-  }
 
-  const items = Converter.of(stringArrayConverter)
-    .withConfig({
-      separator: itemSeparator,
-    })
-    .convert(data);
+    const converterForKeys: ConverterForKey[] = Object.entries<
+      DictionaryLine<PositionResolver>
+    >(dictionary)
+      .sort(
+        (
+          [, { position: position1 }]: [unknown, PositionResolver],
+          [, { position: position2 }]: [unknown, PositionResolver]
+        ) => position1 - position2
+      )
+      .map(([outputKey, { converter }]: [string, LineToConvert]) => {
+        return {
+          outputKey: outputKey,
+          converter: converter,
+        };
+      });
 
-  const itemsWithPropertiesArray = items.map((o) => o.split(propertySeparator));
-
-  const converterForKeys: ConverterForKey[] = Object.entries<
-    DictionaryLine<PositionResolver>
-  >(dictionary)
-    .sort(
-      (
-        [, { position: position1 }]: [unknown, PositionResolver],
-        [, { position: position2 }]: [unknown, PositionResolver]
-      ) => position1 - position2
-    )
-    .map(([outputKey, { converter }]: [string, LineToConvert]) => {
-      return {
-        outputKey: outputKey,
-        converter: converter,
-      };
-    });
-
-  return applyConvertersToGherkinData<D, K>(
-    converterForKeys,
-    itemsWithPropertiesArray
-  );
+    return applyConvertersToGherkinData<D, K>(
+      converterForKeys,
+      itemsWithPropertiesArray
+    );
+  };
 }

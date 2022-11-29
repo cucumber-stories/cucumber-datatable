@@ -15,23 +15,22 @@ const dictionary = {
   },
   compound: {
     columnName: "Compound",
-    converter: Converters.ObjectArray.withConfig({
+    converter: Converters.ObjectArray({
+      titles: {
+        converter: Converters.StringArray,
+        position: 0,
+      },
+      names: {
+        converter: Converters.StringArray.withConfig({ separator: "," }),
+        position: 1,
+      },
+      isAgree: {
+        converter: Converters.Nullable(Converters.YesNoToBoolean),
+        position: 2,
+      },
+    }).withConfig({
       itemSeparator: ",",
       propertySeparator: ":",
-      dictionary: {
-        titles: {
-          converter: Converters.StringArray,
-          position: 0,
-        },
-        names: {
-          converter: Converters.StringArray.withConfig({ separator: "," }),
-          position: 1,
-        },
-        isAgree: {
-          converter: Converters.Nullable(Converters.YesNoToBoolean),
-          position: 2,
-        },
-      },
     }),
   },
 };

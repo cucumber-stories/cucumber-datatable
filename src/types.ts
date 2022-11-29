@@ -21,13 +21,13 @@ export type Dictionary<K extends keyof any, RESOLVER> = Record<
 >;
 
 export type ConverterOutput<T> = T extends {
-  converter: Converter<infer R, unknown>;
+  converter: Converter<infer R, any>;
 }
   ? R
   : never;
 
 export type DictionaryOutput<D> = D extends {
-  [P in keyof D]: { converter: Converter<any, unknown> };
+  [P in keyof D]: { converter: Converter<any, any> };
 }
   ? { [P in keyof D]: ConverterOutput<D[P]> }
   : never;
