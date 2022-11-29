@@ -5,6 +5,7 @@ import { stringArrayConverter } from "./string-array.converter";
 import { objectArrayConverter } from "./object-array.converter";
 import { Converter } from "./converter";
 import { nullable } from "./nullable.converter";
+import { customConverter } from "./custom.converter";
 
 export const Converters = {
   String: new Converter(stringConverter),
@@ -12,5 +13,6 @@ export const Converters = {
   YesNoToBoolean: new Converter(yesNoToBooleanConverter),
   StringArray: new Converter(stringArrayConverter),
   ObjectArray: new Converter(objectArrayConverter),
+  Custom: customConverter,
   Nullable: nullable,
 } as const;

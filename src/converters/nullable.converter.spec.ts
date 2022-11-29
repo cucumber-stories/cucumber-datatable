@@ -34,13 +34,17 @@ it("returns given text with configuration", () => {
 
 it("returns given text with overridden configuration", () => {
   expect(
-    nullable(new Converter(converterWithConfig), { nullValue: "foo" })
+    nullable(
+      new Converter(converterWithConfig).withConfig({
+        append: 1,
+      }),
+      { nullValue: "foo" }
+    )
       .withConfig({
         append: 42,
       })
       .convert("<null>")
-  ).toEqual("<null>");
-  // TODO null42 or null?
+  ).toEqual("<null>42");
 });
 
 it("returns null with configuration", () => {

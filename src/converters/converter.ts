@@ -1,7 +1,9 @@
+export type ConverterFunction<R, C> = <T>(v: string, config?: C) => R;
+
 export class Converter<R, C> {
   private config?: C;
 
-  constructor(readonly converterFunction: <T>(v: string, config?: C) => R) {}
+  constructor(readonly converterFunction: ConverterFunction<R, C>) {}
 
   withConfig(config: C): this {
     this.config = config;

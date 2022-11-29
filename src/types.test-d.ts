@@ -8,25 +8,29 @@ const dictionary = {
   age: { columnName: "Age", converter: Converters.Number },
   custom: {
     columnName: "Custom",
-    converter: (v: string) => ({ custom: v, other: Symbol("other") }),
+    converter: Converters.Custom((v: string) => ({
+      custom: v,
+      other: Symbol("other"),
+    })),
   },
   compound: {
     columnName: "Compound",
-    converter: Converters.ObjectArray({
+    converter: Converters.ObjectArray.withConfig({
       itemSeparator: ",",
       propertySeparator: ":",
-    })({
-      titles: {
-        converter: Converters.StringArray,
-        position: 0,
-      },
-      names: {
-        converter: Converters.StringArray.withConfig({ separator: "," }),
-        position: 1,
-      },
-      isAgree: {
-        converter: Converters.Nullable(Converters.YesNoToBoolean),
-        position: 2,
+      dictionary: {
+        titles: {
+          converter: Converters.StringArray,
+          position: 0,
+        },
+        names: {
+          converter: Converters.StringArray.withConfig({ separator: "," }),
+          position: 1,
+        },
+        isAgree: {
+          converter: Converters.Nullable(Converters.YesNoToBoolean),
+          position: 2,
+        },
       },
     }),
   },
