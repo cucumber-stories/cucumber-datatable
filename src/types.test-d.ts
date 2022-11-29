@@ -4,15 +4,24 @@ import { DataTable } from "@cucumber/cucumber";
 import { Converters } from "./converters";
 import { Converter } from "./converters/converter";
 
+const CustomConverter = Converters.Custom((v: string) => ({
+  custom: v,
+  other: Symbol("other"),
+}));
+
+const CustomConverterWithConfig = Converters.Custom(
+  (v: string, config?: { foo: string }) => ({
+    custom: v,
+    other: Symbol("other"),
+  })
+);
+
 const dictionary = {
   name: { columnName: "Name", converter: Converters.String },
   age: { columnName: "Age", converter: Converters.Number },
   custom: {
     columnName: "Custom",
-    converter: Converters.Custom((v: string) => ({
-      custom: v,
-      other: Symbol("other"),
-    })),
+    converter: CustomConverter,
   },
   compound: {
     columnName: "Compound",
@@ -50,4 +59,12 @@ expectType<
   }[]
 >(result);
 
-expectType<Converter<string, unknown>>(Converters.String);
+expectType<Converter<string, never>>(Converters.String);
+
+expectType<Converter<{ custom: string; other: symbol }, never>>(
+  CustomConverter
+);
+
+expectType<Converter<{ custom: string; other: symbol }, { foo: string }>>(
+  CustomConverterWithConfig
+);
