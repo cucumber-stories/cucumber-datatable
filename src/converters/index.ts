@@ -8,11 +8,11 @@ import { nullable } from "./nullable.converter";
 import { customConverter } from "./custom.converter";
 
 export const Converters = {
-  String: new Converter(stringConverter),
-  Number: new Converter(numberConverter),
-  YesNoToBoolean: new Converter(yesNoToBooleanConverter),
-  StringArray: new Converter(stringArrayConverter),
-  ObjectArray: new Converter(objectArrayConverter),
+  String: Converter.of(stringConverter),
+  Number: Converter.of(numberConverter),
+  YesNoToBoolean: Converter.of(yesNoToBooleanConverter),
+  StringArray: Converter.of(stringArrayConverter),
+  ObjectArray: Converter.of(objectArrayConverter),
   Custom: customConverter,
   Nullable: nullable,
 } as const;

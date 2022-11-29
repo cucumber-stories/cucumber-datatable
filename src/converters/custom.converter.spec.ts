@@ -5,6 +5,6 @@ it("build a converter", () => {
   const converterFunction = (v: string) => v;
 
   expect(customConverter(converterFunction)).toStrictEqual(
-    new Converter(converterFunction)
+    Converter.of(converterFunction)
   );
 });

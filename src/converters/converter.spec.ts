@@ -5,13 +5,13 @@ const converter = (v: string, config?: { foo: number }) =>
 
 it("handles config", () => {
   expect(
-    new Converter(converter).withConfig({ foo: 42 }).convert("bar")
+    Converter.of(converter).withConfig({ foo: 42 }).convert("bar")
   ).toEqual("bar42");
 });
 
 it("handles default config with overridden config", () => {
   expect(
-    new Converter(converter)
+    Converter.of(converter)
       .withConfig({ foo: 1 })
       .withConfig({ foo: 42 })
       .convert("bar")

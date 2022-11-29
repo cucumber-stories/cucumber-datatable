@@ -66,7 +66,7 @@ it("use dictionary's converter to convert the cells", () => {
   const aDataTableFromGherkin = new DataTable([["Name"], ["Banner"]]);
 
   const getHeroes = cucumberDataTable({
-    name: { columnName: "Name", converter: new Converter(converterMock) },
+    name: { columnName: "Name", converter: Converter.of(converterMock) },
   });
 
   const result = getHeroes(aDataTableFromGherkin);

@@ -6,25 +6,25 @@ const converterWithConfig = (v: string, config?: { append: number }) =>
   v + (config ? config.append : "");
 
 it("returns given text when no match with null value", () => {
-  expect(nullable(new Converter(converter)).convert("Some text")).toEqual(
+  expect(nullable(Converter.of(converter)).convert("Some text")).toEqual(
     "Some text"
   );
 });
 
 it("returns null when match", () => {
-  expect(nullable(new Converter(converter)).convert("<null>")).toEqual(null);
+  expect(nullable(Converter.of(converter)).convert("<null>")).toEqual(null);
 });
 
 it("returns null with default configuration", () => {
-  expect(
-    nullable(new Converter(converterWithConfig)).convert("<null>")
-  ).toEqual(null);
+  expect(nullable(Converter.of(converterWithConfig)).convert("<null>")).toEqual(
+    null
+  );
 });
 
 it("returns given text with configuration", () => {
   expect(
     nullable(
-      new Converter(converterWithConfig).withConfig({
+      Converter.of(converterWithConfig).withConfig({
         append: 42,
       }),
       { nullValue: "foo" }
@@ -35,7 +35,7 @@ it("returns given text with configuration", () => {
 it("returns given text with overridden configuration", () => {
   expect(
     nullable(
-      new Converter(converterWithConfig).withConfig({
+      Converter.of(converterWithConfig).withConfig({
         append: 1,
       }),
       { nullValue: "foo" }
@@ -49,7 +49,7 @@ it("returns given text with overridden configuration", () => {
 
 it("returns null with configuration", () => {
   expect(
-    nullable(new Converter(converterWithConfig), { nullValue: "foo" }).convert(
+    nullable(Converter.of(converterWithConfig), { nullValue: "foo" }).convert(
       "foo"
     )
   ).toEqual(null);

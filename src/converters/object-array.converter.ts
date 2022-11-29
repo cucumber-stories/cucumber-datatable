@@ -33,7 +33,7 @@ export function objectArrayConverter<
     );
   }
 
-  const items = new Converter(stringArrayConverter)
+  const items = Converter.of(stringArrayConverter)
     .withConfig({
       separator: itemSeparator,
     })
