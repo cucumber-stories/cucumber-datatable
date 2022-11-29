@@ -1,6 +1,5 @@
 import { DataTable } from "@cucumber/cucumber";
-
-export type Converter<T> = (param: string) => T;
+import { Converter } from "./converters/converter";
 
 export type ColumnNameResolver = {
   columnName: string;
@@ -11,7 +10,7 @@ export type PositionResolver = {
 };
 
 export type LineToConvert = {
-  converter: Converter<unknown>;
+  converter: Converter<any, any>;
 };
 
 export type DictionaryLine<RESOLVER> = LineToConvert & RESOLVER;
@@ -21,12 +20,14 @@ export type Dictionary<K extends keyof any, RESOLVER> = Record<
   DictionaryLine<RESOLVER>
 >;
 
-export type ConverterOutput<T> = T extends { converter: Converter<infer R> }
+export type ConverterOutput<T> = T extends {
+  converter: Converter<infer R, unknown>;
+}
   ? R
   : never;
 
 export type DictionaryOutput<D> = D extends {
-  [P in keyof D]: { converter: Converter<any> };
+  [P in keyof D]: { converter: Converter<any, unknown> };
 }
   ? { [P in keyof D]: ConverterOutput<D[P]> }
   : never;
