@@ -112,7 +112,7 @@ it("Works with many converters", () => {
     },
     active: {
       columnName: "Is active ?",
-      converter: Converters.YesNoToBoolean,
+      converter: Converters.YesNoToBoolean.withConfig({ yes: "ok" }),
     },
   });
 

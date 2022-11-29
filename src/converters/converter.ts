@@ -1,7 +1,7 @@
 export class Converter<R, C> {
   private config?: C;
 
-  constructor(readonly converterFunction: (v: string, config?: C) => R) {}
+  constructor(readonly converterFunction: <T>(v: string, config?: C) => R) {}
 
   withConfig(config: C): this {
     this.config = config;

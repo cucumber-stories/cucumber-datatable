@@ -1,4 +1,4 @@
-export function stringArrayConverter(
+export function stringArrayConverter<K = any>(
   value: string,
   config?: { separator: string }
 ): string[] {

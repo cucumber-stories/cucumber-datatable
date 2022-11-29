@@ -1,4 +1,7 @@
-export function yesNoToBooleanConverter(value: string): boolean {
+export function yesNoToBooleanConverter(
+  value: string,
+  config?: { yes: string }
+): boolean {
   switch (value) {
     case "yes": {
       return true;

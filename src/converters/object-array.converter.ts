@@ -1,6 +1,7 @@
 import {
   Dictionary,
   DictionaryLine,
+  DictionaryOutput,
   LineToConvert,
   PositionResolver,
 } from "../types";
@@ -21,7 +22,7 @@ export function objectArrayConverter<
     itemSeparator: string;
     dictionary: D;
   }
-) {
+): DictionaryOutput<D>[] {
   const propertySeparator = config?.propertySeparator || ":";
   const itemSeparator = config?.itemSeparator || ",";
 

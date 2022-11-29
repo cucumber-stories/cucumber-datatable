@@ -10,7 +10,7 @@ export type PositionResolver = {
 };
 
 export type LineToConvert = {
-  converter: Converter<unknown, unknown>;
+  converter: Converter<any, any>;
 };
 
 export type DictionaryLine<RESOLVER> = LineToConvert & RESOLVER;

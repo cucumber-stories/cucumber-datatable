@@ -12,5 +12,3 @@ export const Converters = {
   StringArray: new Converter(stringArrayConverter),
   ObjectArray: new Converter(objectArrayConverter),
 } as const;
-
-
