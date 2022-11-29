@@ -1,5 +1,7 @@
 # Cucumber DataTable
 
+[![Node.js CI](https://github.com/cucumber-stories/cucumber-datatable/actions/workflows/ci.yml/badge.svg)](https://github.com/cucumber-stories/cucumber-datatable/actions/workflows/ci.yml)
+
 ## Installation
 
 `npm i @cucumber-stories/cucumber-datatable`
@@ -69,7 +71,7 @@ import { cucumberDataTable } from "@cucumber-stories/cucumber-datatable";
 const dictionary = {
   name: {
     columnName: "Name", // Column name in Gherkin file
-    converter: Converters.String, // Converter to use (more samples bellow)
+    converter: Converters.String, // Converter to use (more samples below)
   },
   age: {
     columnName: "Age",
@@ -92,24 +94,25 @@ Out of the box the library provides some useful converters.
 
 Some of the converters can be configurable, you can have details on the [Converter config](#converter-config) section.
 
-| Name                        | In Gherkin         | Output                               | [Default config](#converter-config) |
-| --------------------------- | ------------------ | ------------------------------------ | ----------------------------------- |
-| `Converters.String`         | `"Foo"`            | `"Foo"`                              |                                     |
-| `Converters.Number`         | `"42"`             | `42`                                 |                                     |
-| `Converters.YesNoToBoolean` | `"yes"` or `"no"`  | `true` or `false`                    | `{ yes: "yes"; no: "no" }`          |
-| `Converters.StringArray`    | `"Foo, Bar"`       | `["Foo", "Bar"]`                     | `{ separator: "," }`                |
-| `Converters.ObjectArray`    | `"Foo:42, Bar:32"` | [see below](#object-array-converter) |                                     |
-| `Converters.Nullable`       | `"<null>"`         | [see below](#nullable)               | `{ nullValue: "<null>" }`           |
+| Name                        | In Gherkin                    | Output                               | [Default config](#converter-config)              |
+| --------------------------- | ----------------------------- | ------------------------------------ | ------------------------------------------------ |
+| `Converters.String`         | `"Foo"`                       | `"Foo"`                              |                                                  |
+| `Converters.Number`         | `"42"`                        | `42`                                 |                                                  |
+| `Converters.YesNoToBoolean` | `"yes"` or `"no"`             | `true` or `false`                    | `{ yes: "yes"; no: "no" }`                       |
+| `Converters.StringArray`    | `"Foo, Bar"`                  | `["Foo", "Bar"]`                     | `{ separator: "," }`                             |
+| `Converters.ObjectArray`    | `"Foo:42, Bar:32"`            | [see below](#object-array-converter) | `{ propertySeparator: ":", itemSeparator: "," }` |
+| `Converters.Nullable`       | `"<null>"`                    | [see below](#nullable)               | `{ nullValue: "<null>" }`                        |
+| `Converters.Custom`         | Your special formatting logic | [see below](#custom-converter)       |                                                  |
 
 #### Converter config
 
-If a converter needs configuration, you can wrap it with `Converters.WithConfig`, such as:
+If a converter needs configuration, you can call `.withConfig` method with the specified configuration, such as:
 
 ```typescript
 const dictionary = {
   tags: {
     columnName: "Tags",
-    converter: Converters.WithConfig(Converters.StringArray, {
+    converter: Converters.StringArray.withConfig({
       separator: "-",
     }),
   },
@@ -196,15 +199,10 @@ import {
   Converters,
 } from "@cucumber-stories/cucumber-datatable";
 
-const itemsWithCommaConverter = Converters.ObjectArray({
-  propertySeparator: ":",
-  itemSeparator: ",",
-});
-
 const dictionary = {
   attributes: {
     columnName: "Attributes",
-    converter: itemsWithCommaConverter({
+    converter: Converters.ObjectArray({
       code: {
         position: 0,
         converter: Converters.Number,
@@ -213,6 +211,9 @@ const dictionary = {
         position: 1,
         converter: Converters.String,
       },
+    }).withConfig({
+      propertySeparator: ":",
+      itemSeparator: ",",
     }),
   },
   // Other columns...
@@ -225,10 +226,19 @@ const dictionary = {
 const getStructuredData = cucumberDataTable(dictionary);
 ```
 
+> You don't have to specify `.withConfig` if you want to keep the default config which
+> is `{ propertySeparator: ":", itemSeparator: "," }`
+
 #### Custom converter
 
-At the end a converter is a simple function which takes a string in argument (the data from the gherkin file) and
-returns what you want.
+To sum up, a converter is an instance of the `Converter` class. To create a custom converter to answer your need, you have
+to use `Converter.Custom(<Your converter function>)`.
+
+The converter function takes:
+
+1. a string in argument (the data from the gherkin file),
+2. an optional config as a second parameter,
+3. and returns what you want.
 
 For example if you want to output a custom structure from a column you can do this:
 
@@ -241,7 +251,15 @@ import {
 const dictionary = {
   code: {
     columnName: "Code",
-    converter: (code: string) => ({ nested: code }),
+    converter: Converters.Custom((code: string) => ({ nested: code })),
+  },
+  configurableCode: {
+    columnName: "Configurable code",
+    converter: Converters.Custom(
+      (code: string, config?: { append: string }) => code + config?.append
+    ).withConfig({
+      append: "-code",
+    }),
   },
   // Other columns...
   other: {
@@ -260,17 +278,17 @@ Feature: Heroes sample
 
   Scenario: A simple heroes table
     Given the following table
-      | Code | Other |
-      | 001  | other |
-      | 002  | other |
+      | Code | Configurable code | Other |
+      | 001  | 001               | other |
+      | 002  | 001               | other |
 ```
 
 Into:
 
 ```typescript
 [
-  { code: { nested: "001" }, other: "other" },
-  { code: { nested: "002" }, other: "other" },
+  { code: { nested: "001" }, configurableCode: "001-code", other: "other" },
+  { code: { nested: "002" }, configurableCode: "002-code", other: "other" },
 ];
 ```
 
