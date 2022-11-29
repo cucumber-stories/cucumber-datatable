@@ -7,12 +7,32 @@ import { Converter } from "./converter";
 import { nullable } from "./nullable.converter";
 import { customConverter } from "./custom.converter";
 
-export const Converters = {
-  String: Converter.of(stringConverter),
-  Number: Converter.of(numberConverter),
-  YesNoToBoolean: Converter.of(yesNoToBooleanConverter),
-  StringArray: Converter.of(stringArrayConverter),
-  ObjectArray: Converter.of(objectArrayConverter),
-  Custom: customConverter,
-  Nullable: nullable,
-} as const;
+export class Converters {
+  static get String() {
+    return Converter.of(stringConverter);
+  }
+
+  static get Number() {
+    return Converter.of(numberConverter);
+  }
+
+  static get YesNoToBoolean() {
+    return Converter.of(yesNoToBooleanConverter);
+  }
+
+  static get StringArray() {
+    return Converter.of(stringArrayConverter);
+  }
+
+  static get ObjectArray() {
+    return Converter.of(objectArrayConverter);
+  }
+
+  static get Custom() {
+    return customConverter;
+  }
+
+  static get Nullable() {
+    return nullable;
+  }
+}
