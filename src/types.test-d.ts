@@ -2,6 +2,7 @@ import { expectType } from "tsd";
 import { cucumberDataTable } from "./cucumber-datatable";
 import { DataTable } from "@cucumber/cucumber";
 import { Converters } from "./converters";
+import { Converter } from "./converters/converter";
 
 const dictionary = {
   name: { columnName: "Name", converter: Converters.String },
@@ -39,6 +40,7 @@ const getHeroes = cucumberDataTable(dictionary);
 const result = getHeroes(
   new DataTable([["Name", "Age", "Custom", "Compound"]])
 );
+
 expectType<
   {
     name: string;
@@ -47,3 +49,5 @@ expectType<
     compound: { titles: string[]; names: string[]; isAgree: boolean | null }[];
   }[]
 >(result);
+
+expectType<Converter<string, unknown>>(Converters.String);
