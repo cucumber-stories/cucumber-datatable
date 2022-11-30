@@ -3,12 +3,7 @@ import { objectArrayConverter } from "./object-array.converter";
 
 describe("objectArrayConverter", () => {
   it("converts string to object array", () => {
-    const converterWithSettings = objectArrayConverter({
-      propertySeparator: ":",
-      itemSeparator: ",",
-    });
-
-    const converterWithDictionary = converterWithSettings({
+    const dictionary = {
       color: {
         position: 0,
         converter: Converters.String,
@@ -17,21 +12,22 @@ describe("objectArrayConverter", () => {
         position: 1,
         converter: Converters.Number,
       },
-    });
+    };
+    const config = {
+      propertySeparator: ":",
+      itemSeparator: ",",
+    };
 
-    expect(converterWithDictionary("Red:12, Blue:23")).toEqual([
-      { color: "Red", quantity: 12 },
-      { color: "Blue", quantity: 23 },
-    ]);
+    expect(objectArrayConverter(dictionary)("Red:12, Blue:23", config)).toEqual(
+      [
+        { color: "Red", quantity: 12 },
+        { color: "Blue", quantity: 23 },
+      ]
+    );
   });
 
   it("works even if the positions are shuffled", () => {
-    const converterWithSettings = objectArrayConverter({
-      propertySeparator: ":",
-      itemSeparator: ",",
-    });
-
-    const converterWithDictionary = converterWithSettings({
+    const dictionary = {
       quantity: {
         position: 1,
         converter: Converters.Number,
@@ -44,9 +40,15 @@ describe("objectArrayConverter", () => {
         position: 0,
         converter: Converters.String,
       },
-    });
+    };
+    const config = {
+      propertySeparator: ":",
+      itemSeparator: ",",
+    };
 
-    expect(converterWithDictionary("Red:12:Bob, Blue:23:John")).toEqual([
+    expect(
+      objectArrayConverter(dictionary)("Red:12:Bob, Blue:23:John", config)
+    ).toEqual([
       { name: "Bob", color: "Red", quantity: 12 },
       { name: "John", color: "Blue", quantity: 23 },
     ]);

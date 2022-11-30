@@ -30,10 +30,10 @@ describe("stringArrayConverter", () => {
   });
 
   it("handles semi-colon+ several spaces separator", () => {
-    expect(stringArrayConverter("one  ; two;      three", ";")).toEqual([
-      "one",
-      "two",
-      "three",
-    ]);
+    expect(
+      stringArrayConverter("one  ; two;      three", {
+        separator: ";",
+      })
+    ).toEqual(["one", "two", "three"]);
   });
 });
