@@ -60,6 +60,6 @@
     "typescript": "4.8.3"
   },
   "peerDependencies": {
-    "@cucumber/cucumber": "8.x"
+    "@cucumber/cucumber": "9.x || 8.x"
   }
 }
